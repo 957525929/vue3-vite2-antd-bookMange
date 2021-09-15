@@ -12,14 +12,27 @@
 </template>
 
 <script>
-import { reactive, toRefs } from "vue";
+import { onMounted, reactive, toRefs } from "vue";
 
+//数据持久化测试
 import { useStore } from "vuex";
+
+// import { getTest } from "../api/api";
+//login测试
+import { login } from "../api/api";
+//get测试
+import { getInfo } from "../api/api";
 
 export default {
   setup() {
+    onMounted(() => {
+      getData();
+      goLogin();
+    });
+
     const state = reactive({
       routerTest: "routerTest",
+      testData: "",
     });
 
     const store = useStore();
@@ -27,9 +40,34 @@ export default {
       store.dispatch("add");
     };
 
+    // const getData = async () => {
+    //   state.testData = await getTest();
+    //   console.log(state.testData);
+    // };
+    const goLogin = async () => {
+      let username = "root";
+      let password = "123456";
+      let loginResult = await login({ username, password });
+      window.sessionStorage.setItem(
+        "access_token",
+        // `Bearer ${loginResult.data.access_token}`
+        "Bearer" + " " + loginResult.data.access_token
+      );
+      window.sessionStorage.setItem(
+        "refresh_token",
+        `Bearer ${loginResult.data.refresh_token}`
+      );
+      console.log(loginResult);
+    };
+    const getData = async () => {
+      let data = await getInfo();
+      console.log(data);
+    };
+
     return {
       ...toRefs(state),
       add,
+      // getTest,
     };
   },
 };
