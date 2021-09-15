@@ -8,7 +8,7 @@ This template should help get you started developing with Vue 3 in Vite. The tem
 
 ## 版本
 
-vue 3 + vite 2 + antdv 2 + less + vuex 4 + router 4
+vue 3 + vite 2 + antdv 2 + less + vuex 4 + router 4 + Mock + axios
 
 ## 命名规范
 
