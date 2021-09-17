@@ -23,6 +23,9 @@ import { login } from "../api/api";
 //get测试
 import { getInfo } from "../api/api";
 
+//token
+import { saveToken } from "../util/token";
+
 export default {
   setup() {
     onMounted(() => {
@@ -48,16 +51,8 @@ export default {
       let username = "root";
       let password = "123456";
       let loginResult = await login({ username, password });
-      window.sessionStorage.setItem(
-        "access_token",
-        // `Bearer ${loginResult.data.access_token}`
-        "Bearer" + " " + loginResult.data.access_token
-      );
-      window.sessionStorage.setItem(
-        "refresh_token",
-        `Bearer ${loginResult.data.refresh_token}`
-      );
-      console.log(loginResult);
+      const { access_token, refresh_token } = loginResult.data;
+      saveToken(access_token, refresh_token);
     };
     const getData = async () => {
       let data = await getInfo();

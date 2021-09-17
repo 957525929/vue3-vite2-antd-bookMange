@@ -1,5 +1,8 @@
 import axios from "axios";
 
+//获得token
+import { getToken } from "../util/token";
+
 const $http = axios.create({
   baseURL: "http://121.199.35.37:9000/",
   timeout: 1000,
@@ -9,8 +12,7 @@ const $http = axios.create({
 $http.interceptors.request.use(
   function (config) {
     // 在发送请求之前做些什么
-    config.headers.Authorization =
-      window.sessionStorage.getItem("access_token");
+    config.headers.Authorization = getToken("access_token");
     // config.headers.refresh_token =
     //   window.sessionStorage.getItem("refresh_token");
     return config;
