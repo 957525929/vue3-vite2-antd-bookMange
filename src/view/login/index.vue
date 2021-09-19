@@ -61,6 +61,7 @@ export default {
           saveToken(access_token, refresh_token);
           //路由跳转
           router.push("/home");
+          console.log(router);
         }
       }
     };
