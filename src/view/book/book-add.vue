@@ -1,5 +1,7 @@
 <template>
-  <div>添加图书</div>
+  <div>
+    <a-card>添加图书</a-card>
+  </div>
 </template>
 
 <script>

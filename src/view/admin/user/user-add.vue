@@ -1,5 +1,7 @@
 <template>
-  <div>添加用户</div>
+  <div>
+    <a-card>添加用户</a-card>
+  </div>
 </template>
 
 <script>

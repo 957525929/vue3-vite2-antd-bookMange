@@ -1,5 +1,7 @@
 <template>
-  <div>日志管理</div>
+  <div>
+    <a-card>日志管理</a-card>
+  </div>
 </template>
 
 <script>

@@ -1,10 +1,7 @@
 <template>
   <div class="bread">
-    <a-breadcrumb style="margin-left: 20px; font-size: 16px">
-      <a-breadcrumb-item>Home</a-breadcrumb-item>
-      <a-breadcrumb-item>Application Center</a-breadcrumb-item>
-      <a-breadcrumb-item>Application List</a-breadcrumb-item>
-      <a-breadcrumb-item>An Application</a-breadcrumb-item>
+    <a-breadcrumb style="margin-left: 25px; font-size: 14px">
+      <a-breadcrumb-item>{{ $route.meta.title }}</a-breadcrumb-item>
     </a-breadcrumb>
   </div>
 </template>
@@ -12,10 +9,12 @@
 <script>
 import { reactive, toRefs } from "vue";
 
+import { configRoutes } from "@/config/stage/index.js";
+
 export default {
   setup() {
     const state = reactive({
-      count: 0,
+      routesData: configRoutes[0].children,
     });
 
     return {

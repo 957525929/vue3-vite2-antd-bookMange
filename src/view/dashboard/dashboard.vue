@@ -1,5 +1,7 @@
 <template>
-  <div>数据分析</div>
+  <div>
+    <a-card>数据分析</a-card>
+  </div>
 </template>
 
 <script>

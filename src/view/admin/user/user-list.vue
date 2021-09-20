@@ -1,5 +1,7 @@
 <template>
-  <div>用户列表</div>
+  <div>
+    <a-card>用户列表</a-card>
+  </div>
 </template>
 
 <script>

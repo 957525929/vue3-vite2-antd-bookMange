@@ -1,5 +1,7 @@
 <template>
-  <div>分组管理</div>
+  <div>
+    <a-card>分组管理</a-card>
+  </div>
 </template>
 
 <script>

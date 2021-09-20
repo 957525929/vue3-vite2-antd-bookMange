@@ -1,5 +1,7 @@
 <template>
-  <div>图书列表</div>
+  <div>
+    <a-card>图书列表</a-card>
+  </div>
 </template>
 
 <script>

@@ -11,22 +11,30 @@
       <div style="padding: 20px">
         <a-input-search v-model:value="value" @search="onSearch" />
       </div>
-      <a-menu-item key="1">Option 1</a-menu-item>
-      <a-sub-menu key="sub1">
-        <template #title>Navigation One</template>
-        <a-menu-item key="1-1">Option 1-1</a-menu-item>
-      </a-sub-menu>
-      <a-sub-menu key="sub2">
-        <template #title>Navigation Two</template>
-        <a-menu-item key="2">Option 2-1</a-menu-item>
-        <a-sub-menu key="sub2-1" title="Submenu">
-          <a-menu-item key="2-1">Option 2-1-1</a-menu-item>
+      <div v-for="a in routesData" :key="a.meta.key">
+        <!-- 1级 -->
+        <a-menu-item v-if="!a.children" :key="a.meta.key">
+          {{ a.meta.title }}
+        </a-menu-item>
+        <!-- 2级 -->
+        <a-sub-menu v-if="a.children" :key="a.meta.key" :title="a.meta.title">
+          <div v-for="b in a.children" :key="b.meta.key">
+            <a-menu-item v-if="!b.children" :key="b.meta.key">
+              {{ b.meta.title }}
+            </a-menu-item>
+            <!-- 3级 -->
+            <a-sub-menu
+              v-if="b.children"
+              :key="b.meta.key"
+              :title="b.meta.title"
+            >
+              <a-menu-item v-for="c in b.children" :key="c.meta.key">
+                {{ c.meta.title }}
+              </a-menu-item>
+            </a-sub-menu>
+          </div>
         </a-sub-menu>
-      </a-sub-menu>
-      <a-sub-menu key="sub3">
-        <template #title>Navigation Three</template>
-        <a-menu-item key="3">Option 3-1</a-menu-item>
-      </a-sub-menu>
+      </div>
     </a-menu>
   </div>
 </template>
@@ -34,16 +42,25 @@
 <script>
 import { reactive, toRefs, ref } from "vue";
 
+import router from "@/router/index";
+
+// 获取路由信息
+import { configRoutes } from "@/config/stage/index.js";
+import { homeRouter } from "@/router/get-routes.js";
+
 export default {
   setup() {
     const state = reactive({
-      rootSubmenuKeys: ["sub1", "sub2", "sub3"],
+      rootSubmenuKeys: ["3", "4"],
       openKeys: [],
       selectedKeys: ["1"],
+      routesData: configRoutes[0].children,
     });
 
     const handleClick = (e) => {
-      console.log("click", e);
+      let findKey = homeRouter.find((v) => v.meta.key === e.key);
+      console.log(findKey);
+      router.push(findKey.path);
     };
 
     const onOpenChange = (openKeys) => {
@@ -69,8 +86,8 @@ export default {
       ...toRefs(state),
       handleClick,
       onOpenChange,
-      value,
       onSearch,
+      value,
     };
   },
 };
