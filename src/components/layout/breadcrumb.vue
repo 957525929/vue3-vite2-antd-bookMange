@@ -39,21 +39,23 @@ export default {
       var routesKey = route.matched[1].meta.key;
       var routesData = state.routesData;
       let res = getParent(routesData, routesKey);
-      //拆分字符串成数组
-      let splitRes = res.split("-");
-      return splitRes;
+      return res;
     };
 
-    //根据子节点获取父节点
+    //根据子节点获取父子节点路径
     const getParent = (data, key) => {
       for (let i = 0; i < data.length; i++) {
         if (data[i].meta.key === key) {
-          return data[i].meta.title;
+          let res = [];
+          res.push(data[i].meta.title);
+          return res;
         }
         if (data[i].children) {
           let node = getParent(data[i].children, key);
           if (node !== undefined) {
-            return data[i].meta.title.concat("-" + node);
+            let res = [];
+            res.push(data[i].meta.title, ...node);
+            return res;
           }
         }
       }
