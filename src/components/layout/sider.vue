@@ -63,6 +63,7 @@ export default {
       router.push(findKey.path);
     };
 
+    //手风琴展开
     const onOpenChange = (openKeys) => {
       const latestOpenKey = openKeys.find(
         (key) => state.openKeys.indexOf(key) === -1
@@ -75,8 +76,8 @@ export default {
       }
     };
 
+    //搜索
     const value = ref("");
-
     const onSearch = (searchValue) => {
       console.log("use value", searchValue);
       console.log("or use this.value", value.value);

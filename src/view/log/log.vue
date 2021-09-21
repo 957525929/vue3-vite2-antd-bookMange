@@ -74,11 +74,12 @@ export default {
       logData: "",
       isSearch: false,
       searchData: {
-        logPage: 0,
+        count: 10,
+        page: 0,
         name: "",
         keyword: "",
-        startDate: "",
-        endDate: "",
+        start: "",
+        end: "",
       },
     });
 
@@ -101,10 +102,10 @@ export default {
 
     //加载更多
     const newLog = async () => {
-      state.searchData.logPage++;
+      state.searchData.page++;
       let res;
       if (!state.isSearch) {
-        res = await $http.get("cms/log?page=" + state.logPage);
+        res = await $http.get("cms/log?page=" + state.searchData.page);
       } else {
         res = await searchLog(state.searchData);
       }
@@ -129,7 +130,7 @@ export default {
         state.searchData.name = "";
       }
       state.isSearch = true;
-      state.searchData.logPage = 0;
+      state.searchData.page = 0;
       let res = await searchLog(state.searchData);
       if (res.data.total === 0) {
         message.warning("没有日志信息");
@@ -146,7 +147,7 @@ export default {
     //搜索
     const onSearch = async (searchValue) => {
       state.isSearch = true;
-      state.searchData.logPage = 0;
+      state.searchData.page = 0;
       state.searchData.keyword = searchValue;
       let res = await searchLog(state.searchData);
       if (res.data.total === 0) {
@@ -162,11 +163,11 @@ export default {
     //日期
     const onChange = async (value, dateString) => {
       state.isSearch = true;
-      state.searchData.logPage = 0;
-      state.searchData.startDate = moment(dateString[0]).format(
+      state.searchData.page = 0;
+      state.searchData.start = moment(dateString[0]).format(
         "YYYY-MM-DD+HH:mm:ss"
       );
-      state.searchData.endDate = moment(dateString[1]).format(
+      state.searchData.end = moment(dateString[1]).format(
         "YYYY-MM-DD+HH:mm:ss"
       );
       let res = await searchLog(state.searchData);
