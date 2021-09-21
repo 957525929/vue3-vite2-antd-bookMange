@@ -8,3 +8,6 @@ export const login = (params) => $http.post("/cms/user/login", params);
 
 //查询自己信息
 export const getInfo = () => $http.get("/cms/user/information");
+
+//查询所有日志
+export const getLog = () => $http.get("cms/log");

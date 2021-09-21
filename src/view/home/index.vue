@@ -1,14 +1,24 @@
 <template>
   <div>
     <a-layout>
-      <a-layout-sider>
+      <a-layout-sider
+        :style="{
+          overflow: 'auto',
+          height: '100vh',
+          position: 'fixed',
+          left: 0,
+        }"
+      >
         <Sider />
       </a-layout-sider>
-      <a-layout>
-        <a-layout-header style="padding: 0">
+      <a-layout :style="{ marginLeft: '200px' }">
+        <a-layout-header
+          style="padding: 0"
+          :style="{ position: 'fixed', zIndex: 1, width: '100%' }"
+        >
           <Breadcrumb />
         </a-layout-header>
-        <a-layout-content>
+        <a-layout-content :style="{ marginTop: '64px', width: '100%' }">
           <router-view />
         </a-layout-content>
       </a-layout>
@@ -42,8 +52,8 @@ export default {
 <style lang="less" scoped>
 ::v-deep {
   .ant-layout {
-    height: 100vh;
-    width: 100vw;
+    height: 100%;
+    width: 100%;
   }
 }
 </style>
