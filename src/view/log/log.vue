@@ -61,6 +61,8 @@ import $http from "@/api/index.js";
 
 //所有日志
 import { getLog } from "@/api/api.js";
+//查询日志
+import { searchLog } from "@/api/api.js";
 
 export default {
   components: {
@@ -70,13 +72,13 @@ export default {
     const state = reactive({
       count: 0,
       logData: "",
-      logPage: 0,
       isSearch: false,
       searchData: {
-        name: null,
-        keyword: null,
-        startDate: null,
-        endDate: null,
+        logPage: 0,
+        name: "",
+        keyword: "",
+        startDate: "",
+        endDate: "",
       },
     });
 
@@ -99,18 +101,12 @@ export default {
 
     //加载更多
     const newLog = async () => {
-      state.logPage++;
+      state.searchData.logPage++;
       let res;
       if (!state.isSearch) {
         res = await $http.get("cms/log?page=" + state.logPage);
       } else {
-        res = await $http.get(
-          "cms/log/search?count=10&page=" +
-            state.logPage +
-            "&name=&keyword=" +
-            searchValue.value
-        );
-        console.log(res);
+        res = await searchLog(state.searchData);
       }
       if (res.data.items.length === 0) {
         message.warning("没有更多了");
@@ -126,8 +122,23 @@ export default {
     });
 
     //选择
-    const handleChange = (value) => {
-      state.searchData.name = value.value;
+    const handleChange = async (value) => {
+      if (value.value != "all") {
+        state.searchData.name = value.value;
+      } else {
+        state.searchData.name = "";
+      }
+      state.isSearch = true;
+      state.searchData.logPage = 0;
+      let res = await searchLog(state.searchData);
+      if (res.data.total === 0) {
+        message.warning("没有日志信息");
+      } else {
+        state.logData = [];
+        for (let i in res.data.items) {
+          state.logData.push(res.data.items[i]);
+        }
+      }
     };
 
     const searchValue = ref("");
@@ -135,17 +146,9 @@ export default {
     //搜索
     const onSearch = async (searchValue) => {
       state.isSearch = true;
-      state.logPage = 0;
-      let res = await $http.get(
-        "cms/log/search?count=10&page=" +
-          state.logPage +
-          "&name=&keyword=" +
-          searchValue +
-          "&start=" +
-          state.searchData.startDate +
-          "&end=" +
-          state.searchData.endDate
-      );
+      state.searchData.logPage = 0;
+      state.searchData.keyword = searchValue;
+      let res = await searchLog(state.searchData);
       if (res.data.total === 0) {
         message.warning("没有日志信息");
       } else {
@@ -159,23 +162,15 @@ export default {
     //日期
     const onChange = async (value, dateString) => {
       state.isSearch = true;
-      state.logPage = 0;
+      state.searchData.logPage = 0;
       state.searchData.startDate = moment(dateString[0]).format(
         "YYYY-MM-DD+HH:mm:ss"
       );
       state.searchData.endDate = moment(dateString[1]).format(
         "YYYY-MM-DD+HH:mm:ss"
       );
-      let res = await $http.get(
-        "cms/log/search?count=10&page=" +
-          state.logPage +
-          "&name=&keyword=" +
-          searchValue.value +
-          "&start=" +
-          state.searchData.startDate +
-          "&end=" +
-          state.searchData.endDate
-      );
+      let res = await searchLog(state.searchData);
+      console.log(res);
       if (res.data.total === 0) {
         message.warning("没有日志信息");
       } else {
