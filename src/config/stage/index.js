@@ -47,6 +47,16 @@ export const configRoutes = [
             },
             component: () => import("@/view/book/book-list.vue"),
           },
+          {
+            path: "/book/detail",
+            name: "book-detail",
+            hidden: true,
+            meta: {
+              title: "图书详情",
+              key: "3-3",
+            },
+            component: () => import("@/view/book/book-detail.vue"),
+          },
         ],
       },
       {

@@ -19,7 +19,7 @@
         <!-- 2级 -->
         <a-sub-menu v-if="a.children" :key="a.meta.key" :title="a.meta.title">
           <div v-for="b in a.children" :key="b.meta.key">
-            <a-menu-item v-if="!b.children" :key="b.meta.key">
+            <a-menu-item v-if="!b.children && !b.hidden" :key="b.meta.key">
               {{ b.meta.title }}
             </a-menu-item>
             <!-- 3级 -->

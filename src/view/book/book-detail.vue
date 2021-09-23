@@ -1,6 +1,6 @@
 <template>
   <div>
-    <a-card>添加图书</a-card>
+    <a-card>{{ id ? "修改图书" : "添加图书" }}</a-card>
     <a-card>
       <a-form
         ref="formRef"
@@ -37,11 +37,13 @@
 <script>
 import { reactive, toRefs, ref, onMounted, watch } from "vue";
 import { message } from "ant-design-vue";
-
+import { useRoute } from "vue-router";
 //api
-import { addBook } from "@/api/api.js";
+import { updateBookList, getDetailList } from "@/api/api.js";
 export default {
   setup() {
+    let route = useRoute();
+    let id = route.query.id;
     const formRef = ref(null);
     const formState = reactive({
       title: "",
@@ -50,9 +52,9 @@ export default {
       summary: "",
     });
     const onSubmit = async () => {
-      let res = await addBook(formState);
+      let res = await updateBookList(id, formState);
+      console.log(res);
       message.success(res.data.message);
-      resetForm();
     };
     const resetForm = () => {
       formState.title = "";
@@ -60,7 +62,24 @@ export default {
       formState.image = "";
       formState.summary = "";
     };
-
+    const getDetailed = async () => {
+      if (!id) {
+        return false;
+      }
+      let res = await getDetailList(id);
+      let data = res.data;
+      for (let key in data) {
+        //接口请求出来
+        if (Object.keys(formState).includes(key)) {
+          formState[key] = data[key];
+        }
+      }
+      console.log(res.data);
+    };
+    onMounted(() => {
+      resetForm();
+      getDetailed();
+    });
     return {
       ...toRefs(formState),
       labelCol: {
@@ -72,6 +91,8 @@ export default {
       resetForm,
       formRef,
       onSubmit,
+      id,
+      getDetailed,
     };
   },
 };

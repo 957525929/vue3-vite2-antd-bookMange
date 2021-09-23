@@ -124,6 +124,7 @@ export default {
 
     //选择
     const handleChange = async (value) => {
+      console.log(value);
       if (value.value != "all") {
         state.searchData.name = value.value;
       } else {
@@ -146,10 +147,13 @@ export default {
 
     //搜索
     const onSearch = async (searchValue) => {
+      console.log(searchValue);
       state.isSearch = true;
       state.searchData.page = 0;
       state.searchData.keyword = searchValue;
+      console.log(state.searchData);
       let res = await searchLog(state.searchData);
+      console.log(res);
       if (res.data.total === 0) {
         message.warning("没有日志信息");
       } else {
